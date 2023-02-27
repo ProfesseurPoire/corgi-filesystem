@@ -5,6 +5,14 @@ project(corgi-filesystem-tests DESCRIPTION "Test the CorgiLogger features" LANGU
 add_executable(${PROJECT_NAME} "")
 add_subdirectory(src)
 
+
+if(MSVC)
+target_compile_options(${PROJECT_NAME} PRIVATE -W4 -WX)
+else()
+target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror)
+endif()
+
+
 # Needed for x64 architecture so it looks inside a lib64 repository
 set_property(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS TRUE)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)

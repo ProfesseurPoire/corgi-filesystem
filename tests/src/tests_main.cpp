@@ -1,5 +1,3 @@
-#pragma once
-
 #include "corgi/filesystem/FileSystem.h"
 #include "corgi/test/test.h"
 

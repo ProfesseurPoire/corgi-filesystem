@@ -75,7 +75,7 @@ static size_t find_last(const std::string& str, char c)
             return i;
         }
     }
-    return -1;
+    return std::string::npos;
 }
 
 std::string getParentFolder(const std::string& folder)
@@ -99,7 +99,7 @@ bool file_exist(const std::string& path)
  */
 static size_t find_last(const std::string& str, const std::string& characters)
 {
-    for(int i = str.size() - 1; i >= 0; i--)
+    for(size_t i = str.size() - 1; i >= 0; i--)
     {
         for(const auto& character : characters)
         {
@@ -109,22 +109,22 @@ static size_t find_last(const std::string& str, const std::string& characters)
             }
         }
     }
-    return -1;
+    return std::string::npos;
 }
 
 std::string directory(const std::string& path)
 {
-    int index_last = find_last(path, '/');
-    int other      = find_last(path, '\\');
+    size_t index_last = find_last(path, '/');
+    size_t other      = find_last(path, '\\');
 
-    int final_index = other;
+    size_t final_index = other;
 
     if(index_last > other)
     {
         final_index = index_last;
     }
 
-    if(final_index == -1)
+    if(final_index == std::string::npos)
         return path;
 
     return path.substr(0, final_index);
@@ -141,7 +141,7 @@ bool rename(const std::string& path, const std::string& newPath)
 std::string path_without_name(const std::string& path)
 {
     // we look for the first "/" or "\" if the path from the end
-    const int index = find_last(path, "/\\");
+    const size_t index = find_last(path, "/\\");
 
     // If index equals -1 it means there's nothing before the filename
     if(index == -1)
@@ -172,9 +172,7 @@ std::string extension(const std::string& path)
     std::string str(path);
     std::string ext;
 
-    bool start_ext = false;
-
-    for(int i = str.size() - 1; i >= 0; --i)
+    for(size_t i = str.size() - 1; i >= 0; --i)
     {
         if(str[i] == '.')
             return ext;
@@ -186,8 +184,6 @@ std::string extension(const std::string& path)
 int file_size(const std::string& path)
 {
     std::ifstream file(path.c_str(), std::ifstream::in | std::ifstream::binary);
-
-    int fileSize = 0;
 
     if(file.is_open())
     {
