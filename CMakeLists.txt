@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.9.0)
 
 project(corgi-filesystem VERSION 1.0.0)
 
+set(CMAKE_DEBUG_POSTFIX d)
+
 if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
@@ -14,8 +16,11 @@ add_library(${PROJECT_NAME} STATIC
 
 set_property(TARGET corgi-filesystem PROPERTY CXX_STANDARD 20)
 
-find_package(corgi-containers CONFIG)
-target_link_libraries(${PROJECT_NAME} corgi-containers)
+if(MSVC)
+target_compile_options(${PROJECT_NAME} PRIVATE -W4)
+else()
+target_compile_options(${PROJECT_NAME} PRIVATE -Wall)
+endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
