@@ -28,6 +28,7 @@ std::vector<FileInfo> list_directory(const std::string& directory, bool recursiv
         // We skip files that contains .sys because they are
         // system files that we can't really interact with
         // and causes exceptions when using functions like is_directory
+
         if(fileInfo.extension() == "sys")
             continue;
 
@@ -68,12 +69,15 @@ bool create_directory(const std::string& path)
 
 static size_t find_last(const std::string& str, char c)
 {
-    for(size_t i = str.size() - 1; i > 0; i--)
+    auto index = str.size() - 1;
+
+    for(auto it = str.rbegin(); it != str.rend(); it++)
     {
-        if(str[i] == c)
+        if(*it == c)
         {
-            return i;
+            return index;
         }
+        index--;
     }
     return std::string::npos;
 }
@@ -99,15 +103,18 @@ bool file_exist(const std::string& path)
  */
 static size_t find_last(const std::string& str, const std::string& characters)
 {
-    for(size_t i = str.size() - 1; i >= 0; i--)
+    auto index = str.size() - 1;
+
+    for(auto it = str.rbegin(); it != str.rend(); it++)
     {
         for(const auto& character : characters)
         {
-            if(str[i] == character)
+            if(*it == character)
             {
-                return i;
+                return index;
             }
         }
+        index--;
     }
     return std::string::npos;
 }
@@ -117,17 +124,32 @@ std::string directory(const std::string& path)
     size_t index_last = find_last(path, '/');
     size_t other      = find_last(path, '\\');
 
-    size_t final_index = other;
-
-    if(index_last > other)
+    if(index_last != std::string::npos && other != std::string::npos)
     {
-        final_index = index_last;
+        size_t final_index = other;
+
+        if(index_last > other)
+            final_index = index_last;
+
+        return path.substr(0, final_index);
     }
 
-    if(final_index == std::string::npos)
+    if(index_last == std::string::npos && other == std::string::npos)
+    {
         return path;
+    }
 
-    return path.substr(0, final_index);
+    if(index_last == std::string::npos)
+    {
+        return path.substr(0, other);
+    }
+
+    if(other == std::string::npos)
+    {
+        return path.substr(0, index_last);
+    }
+
+    return "";
 }
 
 bool rename(const std::string& path, const std::string& newPath)
@@ -145,7 +167,7 @@ std::string path_without_name(const std::string& path)
 
     // If index equals -1 it means there's nothing before the filename
     if(index == std::string::npos)
-        return std::string();
+        return "";
 
     return path.substr(0, index + 1);
 }
@@ -157,7 +179,7 @@ std::string filename(const std::string& path)
             return path.substr(
                 i + 1,
                 std::string::npos);    //npos means until the end of the string
-    return std::string();
+    return "";
 }
 
 FileInfo file_info(const std::string& path)
@@ -172,13 +194,13 @@ std::string extension(const std::string& path)
     std::string str(path);
     std::string ext;
 
-    for(size_t i = str.size() - 1; i >= 0; --i)
+    for(auto it = str.rbegin(); it < str.rend(); it++)
     {
-        if(str[i] == '.')
+        if(*it == '.')
             return ext;
-        ext.insert(ext.begin(), str[i]);
+        ext.insert(ext.begin(), *it);
     }
-    return ext;
+    return "";
 }
 
 int file_size(const std::string& path)
