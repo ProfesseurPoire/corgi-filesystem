@@ -17,9 +17,9 @@ add_library(${PROJECT_NAME} STATIC
 set_property(TARGET corgi-filesystem PROPERTY CXX_STANDARD 20)
 
 if(MSVC)
-target_compile_options(${PROJECT_NAME} PRIVATE -W4)
+target_compile_options(${PROJECT_NAME} PRIVATE -W4 -WX)
 else()
-target_compile_options(${PROJECT_NAME} PRIVATE -Wall)
+target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror)
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC

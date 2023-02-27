@@ -66,7 +66,7 @@ bool create_directory(const std::string& path)
     return std::filesystem::create_directory(path.c_str());
 }
 
-int find_last(const std::string& str, char c)
+static size_t find_last(const std::string& str, char c)
 {
     for(size_t i = str.size() - 1; i > 0; i--)
     {
@@ -94,10 +94,10 @@ bool file_exist(const std::string& path)
     return std::filesystem::exists(path.c_str());
 }
 
-/*
-	 * @brief  Find the last occurrence of character c in str
-	 */
-int find_last(const std::string& str, const std::string& characters)
+/*!
+ * @brief  Find the last occurrence of character c in str
+ */
+static size_t find_last(const std::string& str, const std::string& characters)
 {
     for(int i = str.size() - 1; i >= 0; i--)
     {
