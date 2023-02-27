@@ -17,7 +17,7 @@ std::vector<std::string> split(const std::string& str, char character)
     // Basically we try to build a std::string as long as we don't find
     // the character or a space or a tab. If we find that, we push the current
     // std::string to our result list.
-    for(int i = 0; i < str.size(); ++i)
+    for(size_t i = 0; i < str.size(); ++i)
     {
         if(!temp.empty())
         {
@@ -167,7 +167,7 @@ bool Document::read(const std::string& path)
             std::vector<std::string> v;
             v.reserve(result.size() - 1);
 
-            for(int i = 1; i < result.size(); i++)
+            for(size_t i = 1; i < result.size(); i++)
             {
                 v.emplace_back(result[i]);
             }

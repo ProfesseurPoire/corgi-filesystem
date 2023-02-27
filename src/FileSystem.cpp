@@ -144,7 +144,7 @@ std::string path_without_name(const std::string& path)
     const size_t index = find_last(path, "/\\");
 
     // If index equals -1 it means there's nothing before the filename
-    if(index == -1)
+    if(index == std::string::npos)
         return std::string();
 
     return path.substr(0, index + 1);
