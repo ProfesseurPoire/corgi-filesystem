@@ -191,15 +191,11 @@ FileInfo file_info(const std::string& path)
 
 std::string extension(const std::string& path)
 {
-    std::string str(path);
-    std::string ext;
+    auto pos = path.rfind(".");
 
-    for(auto it = str.rbegin(); it < str.rend(); it++)
-    {
-        if(*it == '.')
-            return ext;
-        ext.insert(ext.begin(), *it);
-    }
+    if(pos != std::string::npos)
+        return path.substr(pos + 1, std::string::npos);
+
     return "";
 }
 

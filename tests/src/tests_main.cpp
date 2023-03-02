@@ -18,6 +18,16 @@ TEST(test_filesystem, extension)
         corgi::filesystem::extension("C:/dev/Frog/tools/corgimg/resources/animations");
 
     assert_that(result, corgi::test::equals(""));
+
+    result = corgi::filesystem::extension(
+        "C:/dev/Frog/tools/corgimg/resources/animations.jpg");
+
+    assert_that(result, corgi::test::equals(std::string("jpg")));
+
+    result =
+        corgi::filesystem::extension("C:/dev/Frog/tools/corgimg/resources/animations.");
+
+    assert_that(result, corgi::test::equals(std::string("")));
 }
 
 int main()
